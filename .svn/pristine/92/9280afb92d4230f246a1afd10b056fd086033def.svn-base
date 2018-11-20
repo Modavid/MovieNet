@@ -1,0 +1,200 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
+        x:Class="MovieNetWPF.MainWindow"
+        mc:Ignorable="d"
+        Title="MovieNet" Height="450" Width="800" >
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <command:EventToCommand Command="{Binding ClosingCommand}" PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Window.Resources>
+    </Window.Resources>
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <ComboBox Margin="5" ItemsSource="{Binding Path=FilteredMovies, Mode=TwoWay}" DisplayMemberPath="Title" SelectedItem="{Binding Path=CurrentMovie, Mode=TwoWay}"
+                  IsEditable="True" IsTextSearchEnabled="False" Text="{Binding ComboTextFilter}" StaysOpenOnEdit="True" />
+        <Button Grid.Column="2" Content="Disconnect" MaxWidth="150" HorizontalAlignment="Right" Command="{Binding Path=Disconnect}"/>
+        <Button Grid.Column="2" Content="My Profile" MaxWidth="150" HorizontalAlignment="Right" Command="{Binding Path=MyProfile}" Margin="0,0,65,0"/>
+
+        <DataGrid Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Path=Notes}" IsReadOnly="True" SelectedItem="{Binding Path=CurrentNote}" Margin="5" CanUserSortColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Rating}" Header="Rating" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding Path=User}" Header="User" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding Path=Comment}" Header="Comment" Width="Auto" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row="1" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="Auto"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentMovie}" Value="{x:Null}">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="Auto"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentMovie}" Value="{x:Null}">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="Auto"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentMovie}" Value="{x:Null}">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="Auto"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentMovie}" Value="{x:Null}">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="Auto"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentMovie}" Value="{x:Null}">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="Auto"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentNote}" Value="{x:Null}">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="Auto"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentNote}" Value="{x:Null}">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="Auto"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentNote}" Value="{x:Null}">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition Height="40"/>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="Auto"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentMovie}" Value="{x:Null}">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="Auto"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentMovie}" Value="{x:Null}">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Title : " />
+            <TextBox Text="{Binding Path=CurrentMovie.Title, Mode=TwoWay}" Grid.Column="1" Grid.ColumnSpan="2"/>
+
+            <TextBlock Text="Genre : " Grid.Row="1" />
+            <TextBox Text="{Binding Path=CurrentMovie.Genre, Mode=TwoWay}" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"/>
+
+            <TextBlock Text="Summary : " Grid.Row="2"/>
+            <TextBox Text="{Binding Path=CurrentMovie.Summary, Mode=TwoWay}" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2"/>
+
+            <TextBlock Text="Rating Average : " Grid.Row="3" />
+            <TextBox IsReadOnly="True" Text="{Binding Path=NoteAverage, Mode=TwoWay}" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" BorderThickness="0" />
+
+            <Button Content="Update Movie" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Command="{Binding Path=UpdateMovie}" />
+
+            <TextBlock Text="Comment : " Grid.Row="5" Margin="0,10,0,0"/>
+            <TextBox IsReadOnly="{Binding Path=NoteUpdateReadOnly}" Text="{Binding Path=CurrentNote.Comment, Mode=TwoWay}" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Margin="0,10,0,0"/>
+
+            <TextBlock Text="Rating : " Grid.Row="6" />
+            <TextBox IsReadOnly="{Binding Path=NoteUpdateReadOnly}" Text="{Binding Path=CurrentNote.Rating, Mode=TwoWay}" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2"/>
+
+            <Button Content="Update Note" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="7" Command="{Binding Path=UpdateNote}"/>
+
+            <Button Content="Add New Movie" Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="8" Command="{Binding Path=MovieGen}" VerticalAlignment="Bottom" Height="25"/>
+            <Button Content="Add New Note" Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="9" Command="{Binding Path=NoteGen}" Margin="0,10,0,0" VerticalAlignment="Bottom" Height="25"/>
+            <Button Content="Delete Movie" Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="10" Command="{Binding Path=DelMovie}" Margin="0,10,0,0" Height="25"/>
+            <TextBlock Text="{Binding Tips, Mode=TwoWay}" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="11" AllowDrop="True" Margin="0 20 0 0"/>
+        </Grid>
+    </Grid>
+</Window>

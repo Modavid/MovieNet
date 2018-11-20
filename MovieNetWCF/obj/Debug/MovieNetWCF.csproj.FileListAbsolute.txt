@@ -1,0 +1,57 @@
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\bin\Debug\Database.mdf
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\bin\Debug\Database_log.ldf
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\bin\Debug\MovieNetWCF.dll.config
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\bin\Debug\MovieNetWCF.dll
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\bin\Debug\MovieNetWCF.pdb
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\bin\Debug\EntityFramework.dll
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\bin\Debug\MovieNetLibrary.dll
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\bin\Debug\MovieNetLibrary.pdb
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\bin\Debug\MovieNetLibrary.dll.config
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\bin\Debug\EntityFramework.xml
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\bin\Debug\fr\EntityFramework.resources.dll
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\bin\Debug\fr\EntityFramework.SqlServer.resources.dll
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\obj\Debug\MovieNetWCF.csprojAssemblyReference.cache
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\obj\Debug\MovieNetWCF.csproj.CoreCompileInputs.cache
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\obj\Debug\MovieNetWCF.csproj.CopyComplete
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\obj\Debug\MovieNetWCF.dll
+C:\Users\chris\Desktop\shao_c\MovieNetWCF\obj\Debug\MovieNetWCF.pdb
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\bin\Debug\Database.mdf
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\bin\Debug\Database_log.ldf
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\bin\Debug\MovieNetWCF.dll.config
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\bin\Debug\MovieNetWCF.dll
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\bin\Debug\MovieNetWCF.pdb
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\bin\Debug\EntityFramework.dll
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\bin\Debug\MovieNetLibrary.dll
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\bin\Debug\MovieNetLibrary.pdb
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\bin\Debug\MovieNetLibrary.dll.config
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\bin\Debug\EntityFramework.xml
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\bin\Debug\fr\EntityFramework.resources.dll
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\bin\Debug\fr\EntityFramework.SqlServer.resources.dll
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\obj\Debug\MovieNetWCF.csprojResolveAssemblyReference.cache
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\obj\Debug\MovieNetWCF.csproj.CoreCompileInputs.cache
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\obj\Debug\MovieNetWCF.csproj.CopyComplete
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\obj\Debug\MovieNetWCF.dll
+C:\Users\David\Downloads\shao_c (1)\shao_c\MovieNetWCF\obj\Debug\MovieNetWCF.pdb
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\bin\Debug\Database.mdf
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\bin\Debug\Database_log.ldf
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\bin\Debug\MovieNetWCF.dll.config
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\bin\Debug\MovieNetWCF.dll
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\bin\Debug\MovieNetWCF.pdb
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\bin\Debug\EntityFramework.dll
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\bin\Debug\MovieNetLibrary.dll
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\bin\Debug\MovieNetLibrary.pdb
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\bin\Debug\MovieNetLibrary.dll.config
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\bin\Debug\EntityFramework.xml
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\bin\Debug\fr\EntityFramework.resources.dll
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\bin\Debug\fr\EntityFramework.SqlServer.resources.dll
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\obj\Debug\MovieNetWCF.csprojResolveAssemblyReference.cache
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\obj\Debug\MovieNetWCF.csproj.CoreCompileInputs.cache
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\obj\Debug\MovieNetWCF.csproj.CopyComplete
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\obj\Debug\MovieNetWCF.dll
+C:\Users\David\source\repos\MovieNetWPF\MovieNetWCF\obj\Debug\MovieNetWCF.pdb

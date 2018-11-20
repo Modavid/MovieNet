@@ -1,0 +1,39 @@
+﻿<Window x:Class="MovieNetWPF.MyProfile"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MovieNetWPF"
+        mc:Ignorable="d"
+        Title="MyProfile" Height="450" Width="800">
+    <Grid RenderTransformOrigin="0.501,0.314">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock HorizontalAlignment="Left" Margin="93,41,0,0" TextWrapping="Wrap" Text="Your profile" VerticalAlignment="Top" FontSize="28" Width="147"/>
+
+        <TextBlock HorizontalAlignment="Left"  TextWrapping="Wrap" Text="Login :" VerticalAlignment="Top" Margin="52,140,0,0" Width="36"/>
+        <TextBox Height="auto" Text="{Binding Path=LogLogin, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="152" HorizontalAlignment="Left" Margin="93,140,0,0"/>
+        <TextBlock HorizontalAlignment="Left"  TextWrapping="Wrap" Text="Password :" VerticalAlignment="Top" Margin="31,180,0,0" Width="57"/>
+        <TextBox HorizontalAlignment="Left" Text="{Binding Path=LogPassword, Mode=TwoWay}" Height="23" Margin="93,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="152"/>
+        <Button Content="Update User" Command="{Binding Path=Login}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Margin="93,9.8,0,0" Grid.Row="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="61.2,41,0,0" TextWrapping="Wrap" Text="Your rating" VerticalAlignment="Top" FontSize="28" Grid.Column="1" RenderTransformOrigin="0.072,0.474" />
+
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Path=MyNotes}" IsReadOnly="True" Margin="274,98,9.6,9.6" Grid.RowSpan="2" BorderThickness="0" HorizontalScrollBarVisibility="Auto" Grid.ColumnSpan="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Movie}" Header="Movie" Width="auto"/>
+                <DataGridTextColumn Binding="{Binding Path=Rating}" Header="Rating" Width="auto"/>
+                <DataGridTextColumn Binding="{Binding Path=Comment}" Header="Comment" Width="Auto" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+
+
+    </Grid>
+</Window>

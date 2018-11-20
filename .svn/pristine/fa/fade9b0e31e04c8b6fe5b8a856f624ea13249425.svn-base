@@ -1,0 +1,574 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using MovieNetWPF.WCFMovieService;
+using MovieNetWPF.WCFNoteService;
+using MovieNetWPF.WCFUserService;
+
+namespace MovieNetWPF
+{
+	public class MainViewModel : ViewModelBase
+	{
+		private MovieServiceClient msc = new MovieServiceClient();
+		private NoteServiceClient nsc = new NoteServiceClient();
+		private UserServiceClient usc = new UserServiceClient();
+		LoginWindow loginView;
+		MainWindow mainView;
+		Window currentView;
+		public MainViewModel()
+		{
+			RefreshMovies(); // init of movies list
+			UpdateMovie = new RelayCommand(UpdateMovieExecute, UpdateMovieCanExecute); // Binding update movie to button
+			UpdateNote = new RelayCommand(UpdateNoteExecute, UpdateNoteCanExecute);
+			AddNote = new RelayCommand(AddNoteExecute, AddNoteCanExecute); // binding to add note button
+			DelMovie = new RelayCommand(DelMovieExecute, DelMovieCanExecute); // binding to add note button
+			Login = new RelayCommand(LoginExecute, LoginCanExecute); // binding to login
+			Disconnect = new RelayCommand(DisconnectExecute); // binding to disconnect
+			Register = new RelayCommand(RegisterExecute, RegisterCanExecute); // binding to register
+			ClosingCommand = new RelayCommand<CancelEventArgs>(ClosingWindow); // register closing event
+			NoteGen = new RelayCommand(NoteGenExecute, NoteGenCanExecute); // Movie gen button of mainview (button add new note)
+			MovieGen = new RelayCommand(MovieGenExecute); // Movie gen button of mainview 
+			DataButton = new RelayCommand(DataButtonExecute, DataButtonCanExecute); // DataButton of DataGenerator view
+			Note = new Note();
+		}
+
+		// Movie prop, functions UpdateMovie,
+		private Movie currentMovie;
+		public Movie CurrentMovie
+		{
+			get
+			{
+				return currentMovie;
+			}
+			set
+			{
+				currentMovie = value;
+				RaisePropertyChanged();
+				RefreshNotes();
+			}
+		}
+		// list of movies, is created in ctor and updated when a movie is modified or added
+		private List<Movie> movies;
+		public List<Movie> Movies
+		{
+			get
+			{
+				return movies;
+			}
+			set
+			{
+				movies = value;
+				RaisePropertyChanged();
+			}
+		}
+		// refresh of list of movies
+		private void RefreshMovies()
+		{
+			Movies = msc.GetAllMoviesAsync().Result.ToList();
+		}
+
+		private Movie newMovie;
+		public Movie NewMovie
+		{
+			get
+			{
+				return newMovie;
+			}
+			set
+			{
+				newMovie = value;
+				RaisePropertyChanged();
+			}
+		}
+		
+		public RelayCommand CreateMovie { get; }
+		// create a movie
+		void CreateMovieExecute()
+		{
+			Movie mov = msc.CreateMovieAsync(newMovie.Title, newMovie.Genre, newMovie.Summary).Result;
+			RefreshMovies();
+		}
+
+		bool CreateMovieCanExecute()
+		{
+			return newMovie != null;
+		}
+
+		public RelayCommand UpdateMovie { get; }
+		
+		// Update movie with current movie data
+		void UpdateMovieExecute()
+		{
+			Movie mov = msc.UpdateMovieAsync(this.CurrentMovie.Id, this.CurrentMovie.Title, this.CurrentMovie.Genre, this.CurrentMovie.Summary).Result;
+		}
+		// check if current movie is null
+		bool UpdateMovieCanExecute()
+		{
+			return currentMovie != null;
+		}
+
+		// user prop, functions
+		// property current user
+		private User currentUser;
+		public User CurrentUser
+		{
+			get
+			{
+				return currentUser;
+			}
+			set
+			{
+				currentUser = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		// Login functions
+		// property login login 
+		private String logLogin;
+		public String LogLogin
+		{
+			get
+			{
+				 return logLogin;
+			}
+			set
+			{
+				logLogin = value;
+				RaisePropertyChanged();
+			}
+		}
+		// property login password
+		private String logPassword;
+		public String LogPassword
+		{
+			get
+			{
+				return logPassword;
+			}
+			set
+			{
+				logPassword = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public RelayCommand Login { get; }
+
+		// when button log in is pressed register the login view and hide it, open mainview and set the datacontext
+		void LoginExecute()
+		{
+			if ((CurrentUser = usc.LoginUser(LogLogin, LogPassword)) == null)
+				MessageBox.Show("Invalid User and Password");
+			else
+			{
+				loginView = (LoginWindow)App.Current.MainWindow;
+				loginView.Hide();
+				mainView = new MainWindow
+				{
+					DataContext = this,
+				};
+				mainView.ShowDialog();
+			}
+		}
+		// check if login is null
+		private bool LoginCanExecute()
+		{
+			return LogLogin != null;
+		}
+
+		// register functions
+		//property register login
+		private String regLogin;
+		public String RegLogin
+		{
+			get
+			{
+				return regLogin;
+			}
+			set
+			{
+				regLogin = value;
+				RaisePropertyChanged();
+			}
+		}
+		// property register password
+		private String regPassword;
+		public String RegPassword
+		{
+			get
+			{
+				return regPassword;
+			}
+			set
+			{
+				regPassword = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public RelayCommand Register { get; }
+		// create a new user
+		void RegisterExecute()
+		{
+			User user = usc.CreateUser(RegLogin,RegPassword);
+			if (user != null)
+				MessageBox.Show("Your user has been created");
+			else
+				MessageBox.Show("User already exist");
+		}
+		// Check if login is null
+		bool RegisterCanExecute()
+		{
+			return RegLogin != null;
+		}
+
+		// Note function, prop, ClearNote, AddNote, Refresh
+		// list of note to be showed for the movies
+		private List<CustNote> notes;
+		public List<CustNote> Notes
+		{
+			get
+			{
+				return notes;
+			}
+			set
+			{
+				notes = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		private CustNote currentNote;
+		public CustNote CurrentNote
+		{
+			get
+			{
+				return currentNote;
+			}
+			set
+			{
+				currentNote = value;
+				if (currentNote != null)
+					CheckIfCreator();
+				RaisePropertyChanged();
+			}
+		}
+		private bool noteUpdateReadOnly;
+		public bool NoteUpdateReadOnly
+		{
+			get
+			{
+				return noteUpdateReadOnly;
+			}
+			set
+			{
+				noteUpdateReadOnly = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		private bool CheckIfCreator()
+		{
+			var mynote = nsc.GetNote(currentNote.Id);
+			if (mynote.UserEntity_Id == currentUser.Id)
+			{
+				NoteUpdateReadOnly = false;
+				return true;
+			}
+			NoteUpdateReadOnly = true;
+			return false;
+		}
+
+		public RelayCommand UpdateNote { get; }
+		private void UpdateNoteExecute()
+		{
+			nsc.UpdateNoteAsync(currentNote.Id, currentNote.Rating, currentNote.Comment);
+		}
+
+		private bool UpdateNoteCanExecute()
+		{
+			return currentNote != null && CheckIfCreator();
+		}
+
+		public RelayCommand Disconnect { get; }
+
+		private void DisconnectExecute()
+		{
+			mainView.Close();
+		}
+		private String noteAverage;
+
+		public String NoteAverage
+		{
+			get
+			{
+				return noteAverage;
+			}
+			set
+			{
+				noteAverage = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public RelayCommand DelMovie { get; }
+
+		private bool DelMovieCanExecute()
+		{
+			return currentMovie != null;
+		}
+
+		private void DelMovieExecute()
+		{
+			var dialogResult = MessageBox.Show("This will delete movie and all related rating", "Confirmation window", MessageBoxButton.YesNo);
+			if (dialogResult == MessageBoxResult.Yes)
+			{
+				msc.DeleteMovieAsync(currentMovie.Id);
+				RefreshMovies();
+			}
+		}
+
+		// Refresh the note of current movie , is called when CurrentMovie setter is called.
+		private void RefreshNotes()
+		{
+			if (currentMovie != null)
+			{ 
+				List<CustNote> notes = new List<CustNote>();
+				foreach (var n in nsc.FindNotesOfMovieAsync(CurrentMovie.Id).Result.ToList())
+				{
+					notes.Add(new CustNote() { Rating = n.Rating, Comment = n.Comment, UserId = n.UserEntity_Id, Id = n.Id });
+				}
+				if (notes.Count > 0)
+				{
+					NoteAverage = String.Format("{0:0.0}", notes.Average(x => x.Rating)) + " / 20";
+					foreach (var u in notes)
+					{
+						u.User = usc.GetUser(u.UserId).Login;
+					}
+				}
+				else
+					NoteAverage = "No rating yet, be the first to rate this movie !";
+				Notes = notes;
+				RaisePropertyChanged("Notes");
+			}
+		}
+		// property rating
+		private int rating;
+		public int Rating
+		{
+			get
+			{
+				return rating;
+			}
+			set
+			{
+				rating = value;
+				Note.Rating = rating;
+				RaisePropertyChanged();
+			}
+		}
+		// property comment
+		private String username;
+
+		public String Username
+		{
+			get
+			{
+				return username;
+			}
+			set
+			{
+				username = usc.GetUser(CurrentNote.UserId).Login;
+				RaisePropertyChanged();
+			}
+		}
+
+
+		private String comment;
+		public String Comment
+		{
+			get
+			{
+				return comment;
+			}
+			set
+			{
+				comment = value;
+				Note.Comment = comment;
+				RaisePropertyChanged();
+			}
+		}
+		// property note
+		private Note note;
+		public Note Note
+		{
+			get
+			{
+				return note;
+			}
+			set
+			{
+				note = value;
+				RaisePropertyChanged();
+			}
+		}
+		// create a new instance of note
+		void ClearNote()
+		{
+			Note = new Note();
+		}
+
+		public RelayCommand AddNote { get; }
+		// create new note and refresh note synchronously
+		void AddNoteExecute()
+		{
+			nsc.CreateNote(Note.Rating, Note.Comment, CurrentUser.Id, CurrentMovie.Id);
+			RefreshNotes();
+		}
+		// check if comment is not null, rating between 0 and 20 and current movie not null
+		bool AddNoteCanExecute()
+		{
+			return Comment != null && Enumerable.Range(0,21).Contains(Rating) && currentMovie != null;
+		}
+
+		//login windows function : closing and reopening when mainwindows is closed
+
+		public RelayCommand<CancelEventArgs> ClosingCommand { get; private set; }
+		// when main view is closed actions show previous login and remove the datas
+		private void ClosingWindow(CancelEventArgs obj)
+		{
+			loginView.Show();
+			ResetLoginDatas();
+		}
+
+		//to modify to make cleaner
+		private void ResetLoginDatas()
+		{
+			LogLogin = "";
+			LogPassword = "";
+			RegLogin = "";
+			RegPassword = "";
+		}
+
+		// Data Creation Section (movie and note)
+
+		private String buttonContent;
+		public String ButtonContent 
+		{
+			get
+			{
+				return buttonContent;
+			}
+			set
+			{
+				buttonContent = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public RelayCommand NoteGen { get; }
+		private void NoteGenExecute()
+		{
+			currentView = new DataCreation
+			{
+				DataContext = this,
+			};
+			ButtonContent = "Create Note";
+			TBlock = "Comment";
+			TBlock1 = "Rating";
+			TBox2Visibility = "Hidden";
+			TBox2ratingVisibility = "Visible";
+			RaisePropertyChanged();
+			currentView.ShowDialog();
+		}
+		private bool NoteGenCanExecute()
+		{
+			return currentMovie != null;
+		}
+
+		public RelayCommand MovieGen { get; }
+		
+		private void MovieGenExecute()
+		{
+			currentView = new DataCreation
+			{
+				DataContext = this
+			};
+			ButtonContent = "Create Movie";
+			TBlock = "Title";
+			TBlock1 = "Genre";
+			TBlock2 = "Summary";
+			TBox2Visibility = "Visible";
+			TBox2ratingVisibility = "Hidden";
+			RaisePropertyChanged();
+			currentView.ShowDialog();
+		}
+
+		public String TBox2Visibility{ get; set; }
+		public String TBox2ratingVisibility { get; set; }
+		public RelayCommand DataButton { get; }
+
+		private bool DataButtonCanExecute()
+		{
+			if (buttonContent == "Create Movie")
+			{
+				return TBox != null && TBox1 != null && TBox2 != null;
+			}
+
+			if (buttonContent == "Create Note" && TBox != null)
+			{
+				return  Enumerable.Range(0, 21).Contains(TBox2rating);
+			}
+			return false;
+		}
+
+		private void DataButtonExecute()
+		{
+			if (buttonContent == "Create Movie")
+			{
+				msc.CreateMovie(TBox, TBox1, TBox2);
+				RefreshMovies();
+				CurrentMovie = movies.Last();
+			}
+			if (buttonContent == "Create Note")
+			{
+				nsc.CreateNote(TBox2rating, TBox,currentUser.Id,currentMovie.Id);
+				RefreshNotes();	
+			}
+			TBox = null;
+			TBox1 = null;
+			TBox2 = null;
+			TBox2rating = 0;
+			currentView.Close();
+		}
+
+		public String TBox { get; set; }
+		public String TBox1 { get; set; }
+		public String TBox2 { get; set; }
+		public int TBox2rating { get; set; }
+		
+		public String TBlock { get; set; }
+		public String TBlock1 { get; set; }
+		public String TBlock2 { get; set; }
+
+
+		// custom note model, is implemented because datagrid item source cannot be from 2 sources so we gather 2 in 1.
+		// Id rating comment are from note
+		// User (login), UserId are from user
+		public class CustNote
+		{
+			public int Id { get; set; }
+			public int  Rating{ get; set; }
+			public String Comment{ get; set; }
+			public String User{ get; set; }
+			public int UserId { get; set; }
+		}
+	}
+}

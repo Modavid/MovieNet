@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using MovieNetWPF.WCFMovieService;
+
+namespace MovieNetWPF
+{
+	public class MainViewModel : ViewModelBase
+	{
+		internal static MovieServiceClient msc = new MovieServiceClient(); 
+		
+		public MainViewModel()
+		{
+			
+		}
+		private Movie first = msc.CreateMovie("first", "action", "epic action", 0);
+		private Movie test = msc.GetMovie(1);
+		string test2 = "3";
+	}
+}

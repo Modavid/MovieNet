@@ -1,0 +1,44 @@
+﻿using MovieNetLibrary;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
+
+namespace MovieNetWCF
+{
+	// REMARQUE : vous pouvez utiliser la commande Renommer du menu Refactoriser pour changer le nom de classe "Service1" à la fois dans le code et le fichier de configuration.
+	public class UserService : IUserService
+	{
+		public User GetUser(int id)
+		{
+					
+			DataModelContainer ctx = new DataModelContainer();
+			var userEntity = (from p in ctx.UserEntitySet where p.Id == id select p).FirstOrDefault();
+			if (userEntity != null)
+				return TranslateUser(userEntity);
+			else
+				throw new Exception("Invalid product id");
+		}
+		public User CreateUser(string login, string pwd)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			UserEntity user = new UserEntity();
+			user.Login = login;
+			user.Password = pwd;
+			ctx.UserEntitySet.Add(user);
+			ctx.SaveChanges();
+			return TranslateUser(user);
+		}
+		private User TranslateUser(UserEntity userEntity)
+		{
+			User user = new User();
+			user.Id = userEntity.Id;
+			user.Login = userEntity.Login;
+			user.Password = userEntity.Password;
+			return user;
+		}
+	}
+}

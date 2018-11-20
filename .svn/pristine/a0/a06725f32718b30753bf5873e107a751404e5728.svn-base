@@ -1,0 +1,30 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MovieNetWPF"
+        xmlns:WCFMovieService="clr-namespace:MovieNetWPF.WCFMovieService" xmlns:WCFUserService="clr-namespace:MovieNetWPF.WCFUserService" x:Class="MovieNetWPF.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+    <Window.Resources>
+        <RoutedUICommand x:Key="FirstCommand" Text="First"/>
+        <RoutedUICommand x:Key="LastCommand" Text="Last"/>
+        <RoutedUICommand x:Key="NextCommand" Text="Next"/>
+        <RoutedUICommand x:Key="PreviousCommand" Text="Previous"/>
+        <RoutedUICommand x:Key="DeleteCustomerCommand" Text="Delete Customer"/>
+        <RoutedUICommand x:Key="DeleteOrderCommand" Text="Delete Order"/>
+        <RoutedUICommand x:Key="UpdateCommand" Text="Update"/>
+        <RoutedUICommand x:Key="AddCommand" Text="Add"/>
+        <RoutedUICommand x:Key="CancelCommand" Text="Cancel"/>
+        <CollectionViewSource x:Key="movieViewSource" d:DesignSource="{d:DesignInstance {x:Type WCFMovieService:Movie}, CreateList=True}"/>
+        <CollectionViewSource x:Key="userViewSource" d:DesignSource="{d:DesignInstance {x:Type WCFUserService:User}, CreateList=True}"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <Binding Path="MainVM" Source="{StaticResource ViewModelLocator}"/>
+    </Window.DataContext>
+    <Grid>
+        <TextBox TextWrapping="WrapWithOverflow" IsReadOnly="True" Text="{Binding Name}"  HorizontalAlignment="Left" Height="40" Margin="50,50,0,0" VerticalAlignment="Top" Width="200" TextChanged="TextBox_TextChanged"/>
+
+    </Grid>
+</Window>

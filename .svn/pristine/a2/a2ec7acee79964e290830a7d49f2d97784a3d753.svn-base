@@ -1,0 +1,31 @@
+﻿<Window x:Class="MovieNetWPF.DataCreation"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MovieNetWPF"
+        mc:Ignorable="d"
+        Title="MovieNet" Height="200" Width="250">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock HorizontalAlignment="Left"  TextWrapping="Wrap" Text="{Binding Path=TBlock}" Margin="0,20,0,0"/>
+        <TextBox Text="{Binding Path=TBox, Mode=TwoWay}" HorizontalAlignment="Left" Width="150" Grid.Column="1" Margin="0,20,0,0"/>
+        <TextBlock HorizontalAlignment="Left"  TextWrapping="Wrap" Text="{Binding Path=TBlock1}"  Grid.Row="1"/>
+        <TextBox HorizontalAlignment="Left" Text="{Binding Path=TBox1, Mode=TwoWay}" Visibility="{Binding Path=TBox2Visibility}" Height="23"  TextWrapping="Wrap" Width="150" Grid.Column="1" Grid.Row="1"/>
+        <TextBlock HorizontalAlignment="Left"  TextWrapping="Wrap" Text="{Binding Path=TBlock2}"  Grid.Row="2"/>
+        <TextBox HorizontalAlignment="Left" Text="{Binding Path=TBox2, Mode=TwoWay}" Visibility="{Binding Path=TBox2Visibility}" Height="23"  TextWrapping="Wrap" Width="150" Grid.Column="1" Grid.Row="2"/>
+        <TextBox HorizontalAlignment="Left" Text="{Binding Path=TBox2rating, Mode=TwoWay}" Visibility="{Binding Path=TBox2ratingVisibility}" Height="23"  TextWrapping="Wrap" Width="150" Grid.Column="1" Grid.Row="1"/>
+        <Button Content="{Binding Path=ButtonContent}" Command="{Binding Path=DataButton}" Grid.Row="3" Grid.ColumnSpan="2"/>
+        <PasswordBox Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+    </Grid>
+</Window>

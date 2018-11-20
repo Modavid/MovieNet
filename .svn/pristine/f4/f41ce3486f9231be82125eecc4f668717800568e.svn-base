@@ -1,0 +1,34 @@
+﻿<Window x:Class="MovieNetWPF.LoginWindow"
+        x:Name="logwin"
+
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MovieNetWPF"
+        mc:Ignorable="d"
+        Title="LoginWindow" Height="450" Width="800">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock HorizontalAlignment="Left"  TextWrapping="Wrap" Text="Login :" VerticalAlignment="Top" Margin="160,140,0,0"/>
+        <TextBox Height="auto" Text="{Binding Path=LogLogin, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" HorizontalAlignment="Center" Margin="200,140,46.8,0"/>
+        <TextBlock HorizontalAlignment="Left"  TextWrapping="Wrap" Text="Password :" VerticalAlignment="Top" Margin="139,180,0,0"/>
+        <TextBox HorizontalAlignment="Left" Text="{Binding Path=LogPassword, Mode=TwoWay}" Height="23" Margin="200,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150"/>
+        <Button Content="Login" Command="{Binding Path=Login}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="200,9.8,0,0" Grid.Row="1"/>
+        <TextBox Grid.Column="1" Text="{Binding Path=RegLogin, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="150.2,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="110,140,0,0" TextWrapping="Wrap" Text="Login :" VerticalAlignment="Top"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left"  TextWrapping="Wrap" Text="Password :" VerticalAlignment="Top" Margin="89.2,183,0,0"/>
+        <TextBox Grid.Column="1"  Text="{Binding Path=RegPassword, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="150,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150"/>
+        <Button Content="Register" Command="{Binding Path=Register}" Grid.Column="1" HorizontalAlignment="Left" Margin="150.2,9.8,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75"/>
+        <TextBlock HorizontalAlignment="Left" Margin="139,35,0,0" TextWrapping="Wrap" Text="Connexion" VerticalAlignment="Top" FontSize="28"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="110.2,35,0,0" TextWrapping="Wrap" Text="Création nouveau compte" VerticalAlignment="Top" FontSize="20"/>
+    </Grid>
+</Window>

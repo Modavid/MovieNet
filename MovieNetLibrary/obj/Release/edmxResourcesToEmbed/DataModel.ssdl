@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DataModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="DataModelStoreContainer">
+    <EntitySet Name="UserEntitySet" EntityType="DataModel.Store.UserEntitySet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MovieEntitySet" EntityType="DataModel.Store.MovieEntitySet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="NoteEntitySet" EntityType="DataModel.Store.NoteEntitySet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="MovieEntityNoteEntity" Association="DataModel.Store.MovieEntityNoteEntity">
+      <End Role="MovieEntity" EntitySet="MovieEntitySet" />
+      <End Role="NoteEntity" EntitySet="NoteEntitySet" />
+    </AssociationSet>
+    <AssociationSet Name="UserEntityNoteEntity" Association="DataModel.Store.UserEntityNoteEntity">
+      <End Role="UserEntity" EntitySet="UserEntitySet" />
+      <End Role="NoteEntity" EntitySet="NoteEntitySet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="UserEntitySet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Login" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MovieEntitySet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Genre" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Summary" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NoteEntitySet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Rating" Type="int" Nullable="false" />
+    <Property Name="Comment" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="MovieEntity_Id" Type="int" Nullable="false" />
+    <Property Name="UserEntity_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="MovieEntityNoteEntity">
+    <End Role="MovieEntity" Type="DataModel.Store.MovieEntitySet" Multiplicity="1" />
+    <End Role="NoteEntity" Type="DataModel.Store.NoteEntitySet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MovieEntity">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NoteEntity">
+        <PropertyRef Name="MovieEntity_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserEntityNoteEntity">
+    <End Role="UserEntity" Type="DataModel.Store.UserEntitySet" Multiplicity="1" />
+    <End Role="NoteEntity" Type="DataModel.Store.NoteEntitySet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserEntity">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NoteEntity">
+        <PropertyRef Name="UserEntity_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

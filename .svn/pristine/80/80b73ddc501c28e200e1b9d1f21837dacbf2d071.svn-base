@@ -1,0 +1,187 @@
+﻿using MovieNetLibrary;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
+
+namespace MovieNetWCF
+{
+	// REMARQUE : vous pouvez utiliser la commande Renommer du menu Refactoriser pour changer le nom de classe "Service1" à la fois dans le code et le fichier de configuration.
+	public class UserService : IUserService
+	{
+		public static List<UserEntity> GetAll()
+		{
+			DataModelContainer ctx = new DataModelContainer();
+			return ctx.UserEntitySet.ToList();
+		}
+
+		public User GetUser(int id)
+		{
+            UserEntity userEntity = null;
+
+            try
+            {
+                DataModelContainer ctx = new DataModelContainer();
+                userEntity = (from u in ctx.UserEntitySet where u.Id == id select u).FirstOrDefault();
+                if(userEntity == null)
+                    throw new Exception("Cannot find user with this id");
+
+            }
+            catch (SqlException ex)
+            {
+                for (int i = 0; i < ex.Errors.Count; i++)
+                {
+                    throw new Exception("Index #" + i + "\n" +
+                        "Message: " + ex.Errors[i].Message + "\n" +
+                        "LineNumber: " + ex.Errors[i].LineNumber + "\n" +
+                        "Source: " + ex.Errors[i].Source + "\n" +
+                        "Procedure: " + ex.Errors[i].Procedure + "\n");
+                }
+            }
+            return TranslateUser(userEntity);
+        }
+
+		public User CreateUser(string login, string password)
+		{
+            UserEntity user = null;
+
+            try
+            {
+                DataModelContainer ctx = new DataModelContainer();
+                int count = (from u in ctx.UserEntitySet where u.Login == login && u.Password == password select u).Count();
+                if (count > 0)
+                    new Exception("User already exist");
+
+                user = new UserEntity
+                {
+                    Login = login,
+                    Password = password
+                };
+
+                ctx.UserEntitySet.Add(user);
+                ctx.SaveChanges();
+            }
+            catch (SqlException ex)
+            {
+                for (int i = 0; i < ex.Errors.Count; i++)
+                {
+                    throw new Exception("Index #" + i + "\n" +
+                        "Message: " + ex.Errors[i].Message + "\n" +
+                        "LineNumber: " + ex.Errors[i].LineNumber + "\n" +
+                        "Source: " + ex.Errors[i].Source + "\n" +
+                        "Procedure: " + ex.Errors[i].Procedure + "\n");
+                }
+            }
+
+			return TranslateUser(user);
+		}
+
+		public User UpdateUser(int id, string login, string password)
+		{
+            UserEntity userEntity = null;
+
+            try
+            {
+                DataModelContainer ctx = new DataModelContainer();
+                userEntity = (from u in ctx.UserEntitySet where u.Id == id select u).FirstOrDefault();
+                if (userEntity == null)
+                    throw new Exception("Cannot find user with this id");
+
+                userEntity.Login = login;
+                userEntity.Password = password;
+
+                ctx.SaveChanges();
+            }
+            catch (SqlException ex)
+            {
+                for (int i = 0; i < ex.Errors.Count; i++)
+                {
+                    throw new Exception("Index #" + i + "\n" +
+                        "Message: " + ex.Errors[i].Message + "\n" +
+                        "LineNumber: " + ex.Errors[i].LineNumber + "\n" +
+                        "Source: " + ex.Errors[i].Source + "\n" +
+                        "Procedure: " + ex.Errors[i].Procedure + "\n");
+                }
+            }
+
+			return TranslateUser(userEntity);
+		}
+
+		public Boolean DeleteUser(int id)
+		{
+            try
+            {
+                DataModelContainer ctx = new DataModelContainer();
+                var userEntity = (from u in ctx.UserEntitySet where u.Id == id select u).FirstOrDefault();
+                if (userEntity == null)
+                    throw new Exception("Cannot find user with this id");
+
+                ctx.UserEntitySet.Remove(userEntity);
+                ctx.SaveChanges();
+            }
+            catch (SqlException ex)
+            {
+                for (int i = 0; i < ex.Errors.Count; i++)
+                {
+                    throw new Exception("Index #" + i + "\n" +
+                        "Message: " + ex.Errors[i].Message + "\n" +
+                        "LineNumber: " + ex.Errors[i].LineNumber + "\n" +
+                        "Source: " + ex.Errors[i].Source + "\n" +
+                        "Procedure: " + ex.Errors[i].Procedure + "\n");
+                }
+            }
+
+			return true;
+		}
+
+		public User LoginUser (string login, string password)
+		{
+            UserEntity user = null;
+
+            try
+            {
+                DataModelContainer ctx = new DataModelContainer();
+                user = (from u in ctx.UserEntitySet where u.Login == login && u.Password == password select u).Single();
+                if (user == null)
+                    throw new Exception("Login or password incorrect");
+            }
+            catch (SqlException ex)
+            {
+                for (int i = 0; i < ex.Errors.Count; i++)
+                {
+                    throw new Exception("Index #" + i + "\n" +
+                        "Message: " + ex.Errors[i].Message + "\n" +
+                        "LineNumber: " + ex.Errors[i].LineNumber + "\n" +
+                        "Source: " + ex.Errors[i].Source + "\n" +
+                        "Procedure: " + ex.Errors[i].Procedure + "\n");
+                }
+            }
+
+            return TranslateUser(user);
+        }
+		private User TranslateUser(UserEntity userEntity)
+		{
+			User user = new User
+			{
+				Id = userEntity.Id,
+				Login = userEntity.Login,
+				Password = userEntity.Password
+			};
+			return user;
+		}
+
+		public UserEntity ReverseTranslateUser(User user)
+		{
+			UserEntity userEntity = new UserEntity
+			{
+				Id = user.Id,
+				Login = user.Login,
+				Password = user.Password
+			};
+			return userEntity;
+		}
+	}
+}

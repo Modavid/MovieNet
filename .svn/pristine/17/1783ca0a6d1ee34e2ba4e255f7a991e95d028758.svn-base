@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DataModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="DataModelStoreContainer">
+    <EntitySet Name="UserEntitySet" EntityType="DataModel.Store.UserEntitySet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MovieEntitySet" EntityType="DataModel.Store.MovieEntitySet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="NoteEntitySet" EntityType="DataModel.Store.NoteEntitySet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CommentEntitySet" EntityType="DataModel.Store.CommentEntitySet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="MovieEntityCommentEntity" Association="DataModel.Store.MovieEntityCommentEntity">
+      <End Role="MovieEntity" EntitySet="MovieEntitySet" />
+      <End Role="CommentEntity" EntitySet="CommentEntitySet" />
+    </AssociationSet>
+    <AssociationSet Name="MovieEntityNoteEntity" Association="DataModel.Store.MovieEntityNoteEntity">
+      <End Role="MovieEntity" EntitySet="MovieEntitySet" />
+      <End Role="NoteEntity" EntitySet="NoteEntitySet" />
+    </AssociationSet>
+    <AssociationSet Name="UserEntityNoteEntity" Association="DataModel.Store.UserEntityNoteEntity">
+      <End Role="UserEntity" EntitySet="UserEntitySet" />
+      <End Role="NoteEntity" EntitySet="NoteEntitySet" />
+    </AssociationSet>
+    <AssociationSet Name="UserEntityCommentEntity" Association="DataModel.Store.UserEntityCommentEntity">
+      <End Role="UserEntity" EntitySet="UserEntitySet" />
+      <End Role="CommentEntity" EntitySet="CommentEntitySet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="UserEntitySet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Login" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MovieEntitySet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Genre" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Summary" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NoteEntitySet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Rating" Type="int" Nullable="false" />
+    <Property Name="MovieEntity_Id" Type="int" Nullable="false" />
+    <Property Name="UserEntity_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CommentEntitySet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Comment" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="MovieEntity_Id" Type="int" Nullable="false" />
+    <Property Name="UserEntity_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="MovieEntityCommentEntity">
+    <End Role="MovieEntity" Type="DataModel.Store.MovieEntitySet" Multiplicity="1" />
+    <End Role="CommentEntity" Type="DataModel.Store.CommentEntitySet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MovieEntity">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CommentEntity">
+        <PropertyRef Name="MovieEntity_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="MovieEntityNoteEntity">
+    <End Role="MovieEntity" Type="DataModel.Store.MovieEntitySet" Multiplicity="1" />
+    <End Role="NoteEntity" Type="DataModel.Store.NoteEntitySet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MovieEntity">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NoteEntity">
+        <PropertyRef Name="MovieEntity_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserEntityNoteEntity">
+    <End Role="UserEntity" Type="DataModel.Store.UserEntitySet" Multiplicity="1" />
+    <End Role="NoteEntity" Type="DataModel.Store.NoteEntitySet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserEntity">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NoteEntity">
+        <PropertyRef Name="UserEntity_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserEntityCommentEntity">
+    <End Role="UserEntity" Type="DataModel.Store.UserEntitySet" Multiplicity="1" />
+    <End Role="CommentEntity" Type="DataModel.Store.CommentEntitySet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserEntity">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CommentEntity">
+        <PropertyRef Name="UserEntity_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="DataModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="DataModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="UserEntitySet" EntityType="DataModel.UserEntity" />
+          <EntitySet Name="MovieEntitySet" EntityType="DataModel.MovieEntity" />
+          <EntitySet Name="NoteEntitySet" EntityType="DataModel.NoteEntity" />
+          <EntitySet Name="CommentEntitySet" EntityType="DataModel.CommentEntity" />
+          <AssociationSet Name="MovieEntityCommentEntity" Association="DataModel.MovieEntityCommentEntity">
+            <End Role="MovieEntity" EntitySet="MovieEntitySet" />
+            <End Role="CommentEntity" EntitySet="CommentEntitySet" />
+          </AssociationSet>
+          <AssociationSet Name="MovieEntityNoteEntity" Association="DataModel.MovieEntityNoteEntity">
+            <End Role="MovieEntity" EntitySet="MovieEntitySet" />
+            <End Role="NoteEntity" EntitySet="NoteEntitySet" />
+          </AssociationSet>
+          <AssociationSet Name="UserEntityNoteEntity" Association="DataModel.UserEntityNoteEntity">
+            <End Role="UserEntity" EntitySet="UserEntitySet" />
+            <End Role="NoteEntity" EntitySet="NoteEntitySet" />
+          </AssociationSet>
+          <AssociationSet Name="UserEntityCommentEntity" Association="DataModel.UserEntityCommentEntity">
+            <End Role="UserEntity" EntitySet="UserEntitySet" />
+            <End Role="CommentEntity" EntitySet="CommentEntitySet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="UserEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" />
+          <NavigationProperty Name="NoteEntity" Relationship="DataModel.UserEntityNoteEntity" FromRole="UserEntity" ToRole="NoteEntity" />
+          <NavigationProperty Name="CommentEntity" Relationship="DataModel.UserEntityCommentEntity" FromRole="UserEntity" ToRole="CommentEntity" />
+        </EntityType>
+        <EntityType Name="MovieEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" />
+          <Property Name="Genre" Type="String" Nullable="false" />
+          <Property Name="Summary" Type="String" Nullable="false" />
+          <NavigationProperty Name="CommentEntity" Relationship="DataModel.MovieEntityCommentEntity" FromRole="MovieEntity" ToRole="CommentEntity" />
+          <NavigationProperty Name="NoteEntity" Relationship="DataModel.MovieEntityNoteEntity" FromRole="MovieEntity" ToRole="NoteEntity" />
+        </EntityType>
+        <EntityType Name="NoteEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Rating" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="MovieEntity" Relationship="DataModel.MovieEntityNoteEntity" FromRole="NoteEntity" ToRole="MovieEntity" />
+          <NavigationProperty Name="UserEntity" Relationship="DataModel.UserEntityNoteEntity" FromRole="NoteEntity" ToRole="UserEntity" />
+        </EntityType>
+        <EntityType Name="CommentEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Comment" Type="String" Nullable="false" />
+          <NavigationProperty Name="MovieEntity" Relationship="DataModel.MovieEntityCommentEntity" FromRole="CommentEntity" ToRole="MovieEntity" />
+          <NavigationProperty Name="UserEntity" Relationship="DataModel.UserEntityCommentEntity" FromRole="CommentEntity" ToRole="UserEntity" />
+        </EntityType>
+        <Association Name="MovieEntityCommentEntity">
+          <End Type="DataModel.MovieEntity" Role="MovieEntity" Multiplicity="1" />
+          <End Type="DataModel.CommentEntity" Role="CommentEntity" Multiplicity="*" />
+        </Association>
+        <Association Name="MovieEntityNoteEntity">
+          <End Type="DataModel.MovieEntity" Role="MovieEntity" Multiplicity="1" />
+          <End Type="DataModel.NoteEntity" Role="NoteEntity" Multiplicity="*" />
+        </Association>
+        <Association Name="UserEntityNoteEntity">
+          <End Type="DataModel.UserEntity" Role="UserEntity" Multiplicity="1" />
+          <End Type="DataModel.NoteEntity" Role="NoteEntity" Multiplicity="*" />
+        </Association>
+        <Association Name="UserEntityCommentEntity">
+          <End Type="DataModel.UserEntity" Role="UserEntity" Multiplicity="1" />
+          <End Type="DataModel.CommentEntity" Role="CommentEntity" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DataModelStoreContainer" CdmEntityContainer="DataModelContainer">
+    <EntitySetMapping Name="UserEntitySet">
+      <EntityTypeMapping TypeName="IsTypeOf(DataModel.UserEntity)">
+        <MappingFragment StoreEntitySet="UserEntitySet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Login" ColumnName="Login" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MovieEntitySet">
+      <EntityTypeMapping TypeName="IsTypeOf(DataModel.MovieEntity)">
+        <MappingFragment StoreEntitySet="MovieEntitySet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Genre" ColumnName="Genre" />
+          <ScalarProperty Name="Summary" ColumnName="Summary" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NoteEntitySet">
+      <EntityTypeMapping TypeName="IsTypeOf(DataModel.NoteEntity)">
+        <MappingFragment StoreEntitySet="NoteEntitySet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Rating" ColumnName="Rating" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CommentEntitySet">
+      <EntityTypeMapping TypeName="IsTypeOf(DataModel.CommentEntity)">
+        <MappingFragment StoreEntitySet="CommentEntitySet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="MovieEntityCommentEntity" TypeName="DataModel.MovieEntityCommentEntity" StoreEntitySet="CommentEntitySet">
+      <EndProperty Name="MovieEntity">
+        <ScalarProperty Name="Id" ColumnName="MovieEntity_Id" />
+      </EndProperty>
+      <EndProperty Name="CommentEntity">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="MovieEntityNoteEntity" TypeName="DataModel.MovieEntityNoteEntity" StoreEntitySet="NoteEntitySet">
+      <EndProperty Name="MovieEntity">
+        <ScalarProperty Name="Id" ColumnName="MovieEntity_Id" />
+      </EndProperty>
+      <EndProperty Name="NoteEntity">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="UserEntityNoteEntity" TypeName="DataModel.UserEntityNoteEntity" StoreEntitySet="NoteEntitySet">
+      <EndProperty Name="UserEntity">
+        <ScalarProperty Name="Id" ColumnName="UserEntity_Id" />
+      </EndProperty>
+      <EndProperty Name="NoteEntity">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="UserEntityCommentEntity" TypeName="DataModel.UserEntityCommentEntity" StoreEntitySet="CommentEntitySet">
+      <EndProperty Name="UserEntity">
+        <ScalarProperty Name="Id" ColumnName="UserEntity_Id" />
+      </EndProperty>
+      <EndProperty Name="CommentEntity">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

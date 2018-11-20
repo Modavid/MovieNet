@@ -1,0 +1,178 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using MovieNetWPF.WCFMovieService;
+using MovieNetWPF.WCFNoteService;
+using MovieNetWPF.WCFUserService;
+using MovieNetWPF.ViewModel;
+using System.Windows;
+
+namespace MovieNetWPF
+{
+	public class MainViewModel : ViewModelBase
+	{
+		private MovieServiceClient msc = new MovieServiceClient();
+		private NoteServiceClient nsc = new NoteServiceClient();
+		private UserServiceClient usc = new UserServiceClient();
+		private LoginViewModel childvm;
+
+		public MainViewModel()
+		{
+			Movies = msc.GetAllMoviesAsync().Result.ToList();
+			UpdateMovie = new RelayCommand(UpdateMovieExecute, UpdateMovieCanExecute);
+			AddNote = new RelayCommand(AddNoteExecute, AddNoteCanExecute);
+			CurrentUser = usc.GetUserAsync(1).Result;
+			childvm = new LoginViewModel();
+			Note = new Note();
+			IsLogged();
+		}
+		private Movie currentMovie;
+		public Movie CurrentMovie
+		{
+			get
+			{
+				return currentMovie;
+			}
+			set
+			{
+				currentMovie = value;
+				RaisePropertyChanged();
+				RefreshNotes();
+			}
+		}
+		private List<Movie> movies;
+		public List<Movie> Movies
+		{
+			get
+			{
+				return movies;
+			}
+			set
+			{
+				movies = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		private List<Note> notes;
+
+		public List<Note> Notes
+		{
+			get
+			{
+				return notes;
+			}
+			set
+			{
+				notes = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		private void RefreshNotes()
+		{
+			Notes = nsc.FindNotesOfMovieAsync(CurrentMovie.Id).Result.ToList();
+		}
+
+
+		public RelayCommand UpdateMovie { get; }
+
+		void UpdateMovieExecute()
+		{
+			Movie mov = msc.UpdateMovieAsync(this.CurrentMovie.Id, this.CurrentMovie.Title, this.CurrentMovie.Genre, this.CurrentMovie.Summary).Result;
+		}
+
+		bool UpdateMovieCanExecute()
+		{
+			return currentMovie != null;
+		}
+
+		private User currentUser;
+		public User CurrentUser
+		{
+			get
+			{
+				return currentUser;
+			}
+			set
+			{
+				currentUser = value;
+				RaisePropertyChanged();
+			}
+		}
+
+
+		public void IsLogged()
+		{
+			LoginWindow view = new LoginWindow();
+			view.DataContext = childvm;
+			view.ShowDialog();
+		}
+
+		private int rating;
+		public int Rating
+		{
+			get
+			{
+				return rating;
+			}
+			set
+			{
+				rating = value;
+				Note.Rating = rating;
+				RaisePropertyChanged();
+			}
+		}
+
+		private String comment;
+		public String Comment
+		{
+			get
+			{
+				return comment;
+			}
+			set
+			{
+				comment = value;
+				Note.Comment = comment;
+				RaisePropertyChanged();
+			}
+		}
+		private Note note;
+		public Note Note
+		{
+			get
+			{
+				return note;
+			}
+			set
+			{
+				note = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		void ClearNote()
+		{
+			Note = new Note();
+		}
+
+		public RelayCommand AddNote { get; }
+
+		void AddNoteExecute()
+		{
+			nsc.CreateNote(Note.Rating, Note.Comment, CurrentUser.Id, CurrentMovie.Id);
+			RefreshNotes();
+		}
+
+		bool AddNoteCanExecute()
+		{
+			return Comment != null && Enumerable.Range(0,21).Contains(Rating) && currentMovie != null;
+		}
+	}
+}

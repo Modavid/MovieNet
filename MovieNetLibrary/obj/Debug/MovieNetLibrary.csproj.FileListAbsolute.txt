@@ -1,0 +1,16 @@
+C:\Users\David\source\repos\MovieNetWPF\MovieNetLibrary\bin\Debug\Database.mdf
+C:\Users\David\source\repos\MovieNetWPF\MovieNetLibrary\bin\Debug\Database_log.ldf
+C:\Users\David\source\repos\MovieNetWPF\MovieNetLibrary\bin\Debug\MovieNetLibrary.dll.config
+C:\Users\David\source\repos\MovieNetWPF\MovieNetLibrary\bin\Debug\MovieNetLibrary.dll
+C:\Users\David\source\repos\MovieNetWPF\MovieNetLibrary\bin\Debug\MovieNetLibrary.pdb
+C:\Users\David\source\repos\MovieNetWPF\MovieNetLibrary\bin\Debug\EntityFramework.dll
+C:\Users\David\source\repos\MovieNetWPF\MovieNetLibrary\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\David\source\repos\MovieNetWPF\MovieNetLibrary\bin\Debug\EntityFramework.xml
+C:\Users\David\source\repos\MovieNetWPF\MovieNetLibrary\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\David\source\repos\MovieNetWPF\MovieNetLibrary\bin\Debug\fr\EntityFramework.resources.dll
+C:\Users\David\source\repos\MovieNetWPF\MovieNetLibrary\bin\Debug\fr\EntityFramework.SqlServer.resources.dll
+C:\Users\David\source\repos\MovieNetWPF\MovieNetLibrary\obj\Debug\MovieNetLibrary.csproj.CoreCompileInputs.cache
+C:\Users\David\source\repos\MovieNetWPF\MovieNetLibrary\obj\Debug\MovieNetLibrary.csproj.CopyComplete
+C:\Users\David\source\repos\MovieNetWPF\MovieNetLibrary\obj\Debug\MovieNetLibrary.dll
+C:\Users\David\source\repos\MovieNetWPF\MovieNetLibrary\obj\Debug\MovieNetLibrary.pdb
+C:\Users\David\source\repos\MovieNetWPF\MovieNetLibrary\obj\Debug\MovieNetLibrary.csprojResolveAssemblyReference.cache

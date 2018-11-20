@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DataModelStoreContainer" CdmEntityContainer="DataModelContainer">
+    <EntitySetMapping Name="UserEntitySet">
+      <EntityTypeMapping TypeName="IsTypeOf(DataModel.UserEntity)">
+        <MappingFragment StoreEntitySet="UserEntitySet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Login" ColumnName="Login" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MovieEntitySet">
+      <EntityTypeMapping TypeName="IsTypeOf(DataModel.MovieEntity)">
+        <MappingFragment StoreEntitySet="MovieEntitySet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Genre" ColumnName="Genre" />
+          <ScalarProperty Name="Summary" ColumnName="Summary" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NoteEntitySet">
+      <EntityTypeMapping TypeName="IsTypeOf(DataModel.NoteEntity)">
+        <MappingFragment StoreEntitySet="NoteEntitySet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Rating" ColumnName="Rating" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="MovieEntityNoteEntity" TypeName="DataModel.MovieEntityNoteEntity" StoreEntitySet="NoteEntitySet">
+      <EndProperty Name="MovieEntity">
+        <ScalarProperty Name="Id" ColumnName="MovieEntity_Id" />
+      </EndProperty>
+      <EndProperty Name="NoteEntity">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="UserEntityNoteEntity" TypeName="DataModel.UserEntityNoteEntity" StoreEntitySet="NoteEntitySet">
+      <EndProperty Name="UserEntity">
+        <ScalarProperty Name="Id" ColumnName="UserEntity_Id" />
+      </EndProperty>
+      <EndProperty Name="NoteEntity">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

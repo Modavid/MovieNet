@@ -1,0 +1,51 @@
+﻿using MovieNetLibrary;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
+
+namespace MovieNetWCF
+{
+	// REMARQUE : vous pouvez utiliser la commande Renommer du menu Refactoriser pour changer le nom de classe "Service1" à la fois dans le code et le fichier de configuration.
+	public class MovieService : IMovieService
+	{
+		public Movie GetMovie(int id)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			var movieEntity = (from p in ctx.MovieEntitySet where p.Id == id select p).FirstOrDefault();
+			if (movieEntity != null)
+				return TranslateMovie(movieEntity);
+			else
+				throw new Exception("Invalid product id");
+		}
+		public Movie CreateMovie(string Title, string Genre, string Summary, string Notes, int IdUser)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			MovieEntity movie = new MovieEntity();
+
+			movie.Title = Title;
+			movie.Genre = Genre;
+			movie.Summary = Summary;
+			movie.Notes = Notes;
+			movie.User = (from p in ctx.UserEntitySet where p.Id == IdUser select p).FirstOrDefault(); // to replace by using user dao
+			ctx.MovieEntitySet.Add(movie);
+			ctx.SaveChanges();
+			return TranslateMovie(movie);
+		}
+		private Movie TranslateMovie(MovieEntity movieEntity)
+		{
+			Movie movie = new Movie();
+			
+			movie.Id = movieEntity.Id;
+			movie.Title = movieEntity.Title;
+			movie.Summary = movieEntity.Summary;
+			movie.Notes = movieEntity.Notes;
+			movie.Genre = movieEntity.Genre;
+			return movie;
+		}
+	}
+}

@@ -1,0 +1,137 @@
+﻿using MovieNetLibrary;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
+
+namespace MovieNetWCF
+{
+	// REMARQUE : vous pouvez utiliser la commande Renommer du menu Refactoriser pour changer le nom de classe "Service1" à la fois dans le code et le fichier de configuration.
+	public class MovieService : IMovieService
+	{
+		public Movie GetMovie(int id)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+			NoteService ns = new NoteService();
+			var movieEntity = (from m in ctx.MovieEntitySet.Include("NoteEntity") where m.Id == id select m).FirstOrDefault();
+			//var NoteEntity = ns.FindNotesOfMovie(movieEntity.Id).ToList();
+			//foreach(Note note in NoteEntity)
+			//{
+			//	movieEntity.NoteEntity.Add(ns.ReverseTranslateNote(note));
+			//}
+			if (movieEntity != null)
+				return TranslateMovie(movieEntity);
+			else
+				throw new Exception("Invalid movie id");
+		}
+		public Movie CreateMovie(string title, string genre, string summary, int idUser)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			MovieEntity movie = new MovieEntity
+			{
+				Title = title,
+				Genre = genre,
+				Summary = summary
+			};
+
+			ctx.MovieEntitySet.Add(movie);
+			ctx.SaveChanges();
+			return TranslateMovie(movie);
+		}
+
+		public Movie UpdateMovie(int id, string title, string genre, string summary)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			var movieEntity = (from m in ctx.MovieEntitySet where m.Id == id select m).FirstOrDefault();
+
+			if (movieEntity == null)
+				return null;
+			movieEntity.Title = title;
+			movieEntity.Genre = genre;
+			movieEntity.Summary = summary;
+			ctx.SaveChanges();
+			return TranslateMovie(movieEntity);	
+		}
+
+		public Boolean DeleteMovie(int id)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			var movieEntity = (from m in ctx.MovieEntitySet where m.Id == id select m).FirstOrDefault();
+			if (movieEntity == null)
+				return false;
+			ctx.MovieEntitySet.Remove(movieEntity);
+			ctx.SaveChanges();
+			return true;
+		}
+
+		public List<Movie> FindMovieTitle(string title)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			var query = (from m in ctx.MovieEntitySet select m).ToList();
+			List<MovieEntity> list = query.Where(item => title.Any(t => item.Title.Contains(title))).ToList();
+			List<Movie> movies = new List<Movie>();
+				
+			foreach (var movie in list)
+				movies.Add(TranslateMovie(movie));
+			return movies;
+		}
+
+		public List<Movie> FindMovieGenre(string genre)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			var query = (from m in ctx.MovieEntitySet select m).ToList();
+			List<MovieEntity> list = query.Where(item => genre.Any(t => item.Genre.Contains(genre))).ToList();
+			List<Movie> movies = new List<Movie>();
+
+			foreach (var movie in list)
+			{
+				movies.Add(TranslateMovie(movie));
+			}
+			return movies;
+		}
+
+		public List<Movie> GetAllMovies()
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			var query = (from m in ctx.MovieEntitySet select m).ToList();
+			List<Movie> movies = new List<Movie>();
+
+			foreach (var movie in query)
+			{
+				movies.Add(TranslateMovie(movie));
+			}
+			return movies;
+		}
+		private Movie TranslateMovie(MovieEntity movieEntity)
+		{
+			Movie movie = new Movie
+			{
+				Id = movieEntity.Id,
+				Title = movieEntity.Title,
+				Summary = movieEntity.Summary,
+				Genre = movieEntity.Genre
+			};
+			return movie;
+		}
+
+		internal MovieEntity ReverseTranslateMovie(Movie movie)
+		{
+			MovieEntity movieEntity = new MovieEntity
+			{
+				Id = movie.Id,
+				Title = movie.Title,
+				Summary = movie.Summary,
+				Genre = movie.Genre
+			};
+			return movieEntity;
+		}
+	}
+}

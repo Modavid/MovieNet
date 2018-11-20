@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MovieNetLibrary
+{
+	public class Program
+	{
+		static void Main(string[] args)
+		{
+
+			DataModelContainer ctx = new DataModelContainer();
+
+			MovieEntity movie = new MovieEntity
+			{
+				Title = "AVENGERS: INFINITY WAR",
+				Genre = "Aventure, Action",
+				Summary = "Two years after the Avengers were torn apart during the events of Captain America: " +
+							"Civil War,[1] Thanos arrives on Earth to collect the Infinity Stones for " +
+							"a gauntlet that will allow " +
+							"him to bend reality to his will. The Avengers must join forces with " +
+							"the Guardians of the Galaxy to stop him before " +
+							"his onslaught of destruction puts an end to half the universe"
+			};
+
+
+			ctx.MovieEntitySet.Add(movie);
+			ctx.SaveChanges();
+		}
+	}
+}

@@ -1,0 +1,92 @@
+﻿using MovieNetLibrary;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
+
+namespace MovieNetWCF
+{
+	// REMARQUE : vous pouvez utiliser la commande Renommer du menu Refactoriser pour changer le nom de classe "Service1" à la fois dans le code et le fichier de configuration.
+	public class NoteService : INoteService
+	{
+		public Note GetNote(int id)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			var notesEntity = (from m in ctx.NoteEntitySet where m.Id == id select m).FirstOrDefault();
+			if (notesEntity != null)
+				return TranslateNote(notesEntity);
+			else
+				throw new Exception("Invalid notes id");
+		}
+		public Note CreateNote(int rating, int idUser, int idMovie)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+			MovieService ms = new MovieService();
+			UserService us = new UserService();
+			NoteEntity note = new NoteEntity
+			{
+				Rating = rating,
+				MovieEntity = ms.ReverseTranslateMovie(ms.GetMovie(idMovie)),
+				UserEntity = us.ReverseTranslateUser(us.GetUser(idUser))
+			};
+
+			ctx.NoteEntitySet.Add(note);
+			ctx.SaveChanges();
+			return TranslateNote(note);
+		}
+
+		public Note UpdateNote(int id,int rating)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			var notesEntity = (from m in ctx.NoteEntitySet where m.Id == id select m).FirstOrDefault();
+
+			if (notesEntity == null)
+				return null;
+			notesEntity.Rating = rating;
+			ctx.SaveChanges();
+			return TranslateNote(notesEntity);
+		}
+
+		public Boolean DeleteNote(int id)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			var notesEntity = (from m in ctx.NoteEntitySet where m.Id == id select m).FirstOrDefault();
+			if (notesEntity == null)
+				return false;
+			ctx.NoteEntitySet.Remove(notesEntity);
+			ctx.SaveChanges();
+			return true;
+		}
+
+		public List<Note> FindNotesOfMovie(int idMovie)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			var query = (from n in ctx.NoteEntitySet where n.MovieEntity.Id == idMovie select n).ToList();
+			List<NoteEntity> list = query.ToList();
+			List<Note> notes = new List<Note>();
+
+			foreach (var note in list)
+			{
+				notes.Add(TranslateNote(note));
+			}
+			return notes;
+		}
+		private Note TranslateNote(NoteEntity notesEntity)
+		{
+			Note note = new Note
+			{
+				Id = notesEntity.Id,
+				Rating = notesEntity.Rating,
+			};
+			return note;
+		}
+
+
+	}
+}

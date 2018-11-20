@@ -1,0 +1,72 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using MovieNetWPF.WCFMovieService;
+using MovieNetWPF.WCFNoteService;
+using MovieNetWPF.WCFUserService;
+
+namespace MovieNetWPF
+{
+	public class MainViewModel : ViewModelBase
+	{
+		private MovieServiceClient msc = new MovieServiceClient();
+		private NoteServiceClient nsc = new NoteServiceClient();
+		private UserServiceClient usc = new UserServiceClient();
+		public MainViewModel()
+		{
+			Movies = msc.GetAllMoviesAsync().Result.ToList();
+			msc.CreateMovieAsync("avenger", "action", "thanos le méchant", 0);
+
+			usc.CreateUserAsync("login","password");
+			nsc.CreateNoteAsync(10, 1, 1);
+			string test2;
+		
+		}
+		private Movie currentMovie;
+		public Movie CurrentMovie
+		{
+			get => currentMovie;
+			set
+			{
+				currentMovie = value;
+				RaisePropertyChanged();
+
+			}
+		}
+		private List<Movie> movies;
+		public List<Movie> Movies
+		{
+			get
+			{
+				return movies;
+			}
+			set
+			{
+				movies = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		private List<Note> notes;
+		public List<Note> Notes
+		{
+			get => notes;
+			set
+			{
+				notes = value;
+				RaisePropertyChanged();
+				RefreshNotes();
+			}
+		}
+		
+		private void RefreshNotes()
+		{
+			notes = nsc.FindNotesOfMovieAsync(CurrentMovie.Id).Result.ToList();
+
+		}
+	}
+}

@@ -1,0 +1,118 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using MovieNetWPF.WCFMovieService;
+using MovieNetWPF.WCFNoteService;
+using MovieNetWPF.WCFUserService;
+
+namespace MovieNetWPF
+{
+	public class MainViewModel : ViewModelBase
+	{
+		private MovieServiceClient msc = new MovieServiceClient();
+		private NoteServiceClient nsc = new NoteServiceClient();
+		private UserServiceClient usc = new UserServiceClient();
+		public MainViewModel()
+		{
+			Movies = msc.GetAllMoviesAsync().Result.ToList();
+			msc.CreateMovieAsync("avenger", "action", "thanos le méchant");
+
+			usc.CreateUserAsync("login", "password");
+			nsc.CreateNoteAsync(10, "gg", 1, 1);
+			this.saveMovie = new SaveCurrentMovie(this);
+		}
+		private Movie currentMovie;
+		public Movie CurrentMovie
+		{
+			get
+			{
+				return currentMovie;
+			}
+			set
+			{
+				currentMovie = value;
+				RaisePropertyChanged();
+				RefreshNotes();
+			}
+		}
+		private List<Movie> movies;
+		public List<Movie> Movies
+		{
+			get
+			{
+				return movies;
+			}
+			set
+			{
+				movies = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		private List<Note> notes;
+
+		public List<Note> Notes
+		{
+			get
+			{
+				return notes;
+			}
+			set
+			{
+				notes = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		private void RefreshNotes()
+		{
+			Notes = nsc.FindNotesOfMovieAsync(CurrentMovie.Id).Result.ToList();
+
+		}
+
+		
+		private void UpdateMovie()
+		{
+			msc.UpdateMovieAsync(this.CurrentMovie.Id, this.CurrentMovie.Title, this.CurrentMovie.Genre, this.CurrentMovie.Summary);
+		}
+		private SaveCurrentMovie saveMovie;
+		public SaveCurrentMovie SaveMovie
+		{
+			get
+			{
+				return saveMovie;
+			}
+		}
+
+		public class SaveCurrentMovie : ICommand
+		{
+			private MainViewModel vm;
+
+			public SaveCurrentMovie(MainViewModel vm)
+			{
+				this.vm = vm;
+				this.vm.RaisePropertyChanged();
+			}
+
+			public event EventHandler CanExecuteChanged;
+
+			public bool CanExecute(object parameter)
+			{
+				return this.vm.CurrentMovie != null;
+			}
+
+			public void Execute(object parameter)
+			{
+				this.vm.UpdateMovie();
+			}
+		}
+
+
+
+	}
+}

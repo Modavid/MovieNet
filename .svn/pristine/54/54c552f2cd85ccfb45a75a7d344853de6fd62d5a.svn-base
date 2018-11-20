@@ -1,0 +1,28 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MovieNetWPF"
+        xmlns:WCFMovieService="clr-namespace:MovieNetWPF.WCFMovieService" xmlns:WCFUserService="clr-namespace:MovieNetWPF.WCFUserService" x:Class="MovieNetWPF.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+    <Window.Resources>
+
+        <CollectionViewSource x:Key="movieViewSource" d:DesignSource="{d:DesignInstance {x:Type WCFMovieService:Movie}, CreateList=True}"/>
+
+    </Window.Resources>
+    <Window.DataContext>
+        <Binding Path="MainVM" Source="{StaticResource ViewModelLocator}"/>
+    </Window.DataContext>
+    <Grid>
+        <DataGrid x:Name="movieDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource movieViewSource}}" Margin="212,73,181.6,148.6" RowDetailsVisibilityMode="VisibleWhenSelected">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="genreColumn" Binding="{Binding Genre}" Header="Genre" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="idColumn" Binding="{Binding Id}" Header="Id" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="summaryColumn" Binding="{Binding Summary}" Header="Summary" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="titleColumn" Binding="{Binding Title}" Header="Title" Width="SizeToHeader"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

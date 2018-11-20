@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="DataModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="DataModelContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="UserEntitySet" EntityType="DataModel.UserEntity" />
+    <EntitySet Name="MovieEntitySet" EntityType="DataModel.MovieEntity" />
+    <EntitySet Name="NoteEntitySet" EntityType="DataModel.NoteEntity" />
+    <AssociationSet Name="MovieEntityNoteEntity" Association="DataModel.MovieEntityNoteEntity">
+      <End Role="MovieEntity" EntitySet="MovieEntitySet" />
+      <End Role="NoteEntity" EntitySet="NoteEntitySet" />
+    </AssociationSet>
+    <AssociationSet Name="UserEntityNoteEntity" Association="DataModel.UserEntityNoteEntity">
+      <End Role="UserEntity" EntitySet="UserEntitySet" />
+      <End Role="NoteEntity" EntitySet="NoteEntitySet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="UserEntity">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Login" Type="String" Nullable="false" />
+    <Property Name="Password" Type="String" Nullable="false" />
+    <NavigationProperty Name="NoteEntity" Relationship="DataModel.UserEntityNoteEntity" FromRole="UserEntity" ToRole="NoteEntity" />
+  </EntityType>
+  <EntityType Name="MovieEntity">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" Nullable="false" />
+    <Property Name="Genre" Type="String" Nullable="false" />
+    <Property Name="Summary" Type="String" Nullable="false" />
+    <NavigationProperty Name="NoteEntity" Relationship="DataModel.MovieEntityNoteEntity" FromRole="MovieEntity" ToRole="NoteEntity" />
+  </EntityType>
+  <EntityType Name="NoteEntity">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Rating" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="MovieEntity" Relationship="DataModel.MovieEntityNoteEntity" FromRole="NoteEntity" ToRole="MovieEntity" />
+    <NavigationProperty Name="UserEntity" Relationship="DataModel.UserEntityNoteEntity" FromRole="NoteEntity" ToRole="UserEntity" />
+    <Property Name="Comment" Type="String" Nullable="false" />
+  </EntityType>
+  <Association Name="MovieEntityNoteEntity">
+    <End Type="DataModel.MovieEntity" Role="MovieEntity" Multiplicity="1" />
+    <End Type="DataModel.NoteEntity" Role="NoteEntity" Multiplicity="*" />
+  </Association>
+  <Association Name="UserEntityNoteEntity">
+    <End Type="DataModel.UserEntity" Role="UserEntity" Multiplicity="1" />
+    <End Type="DataModel.NoteEntity" Role="NoteEntity" Multiplicity="*" />
+  </Association>
+</Schema>

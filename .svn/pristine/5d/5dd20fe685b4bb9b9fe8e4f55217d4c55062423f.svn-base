@@ -1,0 +1,79 @@
+﻿using MovieNetLibrary;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
+
+namespace MovieNetWCF
+{
+	// REMARQUE : vous pouvez utiliser la commande Renommer du menu Refactoriser pour changer le nom de classe "Service1" à la fois dans le code et le fichier de configuration.
+	public class MovieService : IMovieService
+	{
+		public Movie GetMovie(int id)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			var movieEntity = (from m in ctx.MovieEntitySet where m.Id == id select m).FirstOrDefault();
+			if (movieEntity != null)
+				return TranslateMovie(movieEntity);
+			else
+				throw new Exception("Invalid movie id");
+		}
+		public Movie CreateMovie(string title, string genre, string summary, string notes, int idUser)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			MovieEntity movie = new MovieEntity();
+
+			movie.Title = title;
+			movie.Genre = genre;
+			movie.Summary = summary;
+			movie.Notes = notes;
+			movie.User = (from u in ctx.UserEntitySet where u.Id == idUser select u).FirstOrDefault(); // to replace by using user dao
+			ctx.MovieEntitySet.Add(movie);
+			ctx.SaveChanges();
+			return TranslateMovie(movie);
+		}
+
+		public Movie UpdateMovie(int id, string title, string genre, string summary, string notes)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			var movieEntity = (from m in ctx.MovieEntitySet where m.Id == id select m).FirstOrDefault();
+
+			if (movieEntity == null)
+				return null;
+			movieEntity.Title = title;
+			movieEntity.Genre = genre;
+			movieEntity.Summary = summary;
+			movieEntity.Notes = notes;
+			ctx.SaveChanges();
+			return TranslateMovie(movieEntity);	
+		}
+
+		public Boolean DeleteMovie(int id)
+		{
+			DataModelContainer ctx = new DataModelContainer();
+
+			var movieEntity = (from m in ctx.MovieEntitySet where m.Id == id select m).FirstOrDefault();
+			if (movieEntity == null)
+				return false;
+			ctx.MovieEntitySet.Remove(movieEntity);
+			ctx.SaveChanges();
+			return true;
+		}
+		private Movie TranslateMovie(MovieEntity movieEntity)
+		{
+			Movie movie = new Movie();
+			
+			movie.Id = movieEntity.Id;
+			movie.Title = movieEntity.Title;
+			movie.Summary = movieEntity.Summary;
+			movie.Notes = movieEntity.Notes;
+			movie.Genre = movieEntity.Genre;
+			return movie;
+		}
+	}
+}
